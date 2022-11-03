@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env sh
 # Prevents force-pushing to master
 . "$(dirname -- "$0")/_/husky.sh"
 
