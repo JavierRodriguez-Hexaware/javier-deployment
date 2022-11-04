@@ -59,7 +59,7 @@ jobs:
           node-version: "16"
       - name: Get Branch Name
         id: get-branch
-        uses: ypicard/get-brach-name-github-action@v1
+        uses: ypicard/get-branch-name-github-action@v1
 
       - name: Create PR
         id: branch
