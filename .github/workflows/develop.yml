@@ -57,12 +57,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-      - name: Get Branch Name
-        id: get-branch
+      - name: branch name
+        id: branch_name
         uses: ypicard/get-branch-name-github-action@v1
 
       - name: Create PR
-        id: branch
-        run: gh pr create --base main --head ${{steps.get-branch.outputs.branch}}  --titile "Pull branch ${{steps.get-branch.outputs.branch}} to main branch" --body "PR"
+        run: gh pr create --base main --head ${{steps.branch_name.outputs.branch}}  --title "Pull branch ${{steps.branch_name.outputs.branch}} to main branch" --body "PR"
         env:
           GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
