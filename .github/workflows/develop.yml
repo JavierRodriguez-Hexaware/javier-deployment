@@ -1,4 +1,4 @@
-name: Test Code
+name: Deploy QA Netlify
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
       - develop/*
 
 jobs:
-  test-code:
+  validation:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -22,4 +22,29 @@ jobs:
         run: npm run lint
 
       - name: Test coverage
+        run: npm run test
+
+  deploy:
+    needs: validation
+    environment:
+      name: QA
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build
+        run: CI=false npm run build
+
+      - name: Set Homepage
+        run: npm run Sethomepage
+
+      - name: deploy to Netlify
+        run: netlify deploy -p --auth ${{secrets.AUTH_TOKEN_QA}} --site ${{SITE_ID_QA}}
+
+      - name: Run test
         run: npm run test
