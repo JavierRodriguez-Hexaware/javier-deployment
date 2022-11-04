@@ -64,4 +64,4 @@ jobs:
       - name: Create PR
         run: gh pr create --base main --head ${{steps.branch_name.outputs.branch}}  --title "Pull branch ${{steps.branch_name.outputs.branch}} to main branch" --body "PR"
         env:
-          GH_TOKEN: ${{secrets.GH_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
