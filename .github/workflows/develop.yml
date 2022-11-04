@@ -44,7 +44,7 @@ jobs:
         run: npm run Sethomepage
 
       - name: deploy to Netlify
-        run: netlify deploy -p --auth ${{secrets.AUTH_TOKEN_QA}} --site ${{SITE_ID_QA}}
+        run: netlify deploy -p --auth {{secrets.AUTH_TOKEN_QA}} --site {{SITE_ID_QA}}
 
       - name: Run test
         run: npm run test
