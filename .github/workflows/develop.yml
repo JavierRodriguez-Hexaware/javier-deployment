@@ -48,3 +48,21 @@ jobs:
 
       - name: Run test
         run: npm run test
+
+  PR:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Branch name
+        id: branch_name
+        uses: ypicard/get-brach-name-github-action@v1
+
+      - name: Create PR
+        id: branch
+        run: gh pr create --base main --head ${{steps.branch_name.outputs.branch}}  --titile "Pull branch ${{steps.branch_name.outputs.branch}} to main branch" --body "PR"
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
