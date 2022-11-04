@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - develop/*
+
 #Prevent the error with the enviroment in Netlify
 env:
   CI: false
