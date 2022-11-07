@@ -3,8 +3,8 @@ name: Deploy QA
 on:
   pull_request:
   push:
-    branches:
-      - develop/*
+    branches-ignore:
+      - main
 
 #Prevent the error with the enviroment in Netlify CI=false
 env:
