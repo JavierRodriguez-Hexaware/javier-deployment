@@ -6,7 +6,7 @@ on:
     branches:
       - develop/*
 
-#Prevent the error with the enviroment in Netlify
+#Prevent the error with the enviroment in Netlify CI=false
 env:
   CI: false
 
