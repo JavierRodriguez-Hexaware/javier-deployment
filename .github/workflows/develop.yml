@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+#Prevent the error with the enviroment in Netlify CI=false
+env:
+  CI: false
+
 jobs:
   verification:
     runs-on: ubuntu-latest
@@ -23,3 +27,45 @@ jobs:
 
       - name: Test coverage
         run: npm run test
+
+  deploy:
+    needs: verification
+    environment:
+      name: QA
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Set Homepage
+        run: npm run Sethomepage
+
+      - name: Build
+        run: CI=false npm run build
+
+      - name: deploy to Netlify
+        run: netlify deploy -p --auth ${{secrets.AUTH_TOKEN_QA}} --site ${{secrets.SITE_ID_QA}}
+
+      - name: Run test
+        run: npm run test
+
+  PR:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: branch name
+        id: branch_name
+        uses: ypicard/get-branch-name-github-action@v1
+
+      - name: Create PR
+        run: gh pr create --base main --head ${{steps.branch_name.outputs.branch}}  --title "Pull branch ${{steps.branch_name.outputs.branch}} to main branch" --body "PR"
+        env:
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
